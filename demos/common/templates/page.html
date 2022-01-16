@@ -1,0 +1,48 @@
+<br /><br />
+<div>
+    {@page.description}
+</div>
+<br /><br />
+<h3>{@page.pluralsDemo}</h3>
+{/ucfirst {@page.theFox 10 @colors.red}}<br />
+{/ucfirst {@page.theFox 1 @colors.blue}}<br />
+<br /><br /><br />
+
+<h3>{@page.eachAndIF}</h3>
+<table style="min-width:500px" cellspacing="10">
+    <tr style="font-weight:bold">
+        <td>{@page.authorName}</td>
+        <td>{@page.books}</td>
+        <td>{@page.availability}</td>
+    </tr>
+    {#each $authors as $author}
+        <tr>
+            <td>
+                {$author.firstName " " $author.lastName}
+            </td>
+            <td>
+                <ul>
+                {#each $author.books as $book}
+                    <li>{$book}</li>
+                {#end}
+                </ul>
+            </td>
+            <td>
+                {#if $author.soldOut}
+                    <span style="color:red">{@page.soldOut}</span>
+                {#else}
+                    <span style="color:green">{@page.inStock}</span>
+                {#end}
+            </td>
+        </tr>
+    {#end}
+</table>
+
+
+<h3>{@page.extensions}</h3>
+<div>{@page.extDescription}</div>
+<br /><br />
+{@page.todayDate} {/date "M d, Y"}<br />
+{@page.timeNow} {/date "H:i"}<br />
+<br /><br />
+Escaping is done with backslash, e.g. <code>\\{@page.description}</code>

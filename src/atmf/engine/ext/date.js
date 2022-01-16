@@ -23,6 +23,10 @@ class DateExtension {
         }
         else return false;
     }
+
+    static Register(ATMFEngine) {
+        ATMFEngine.extensions.Register('date', new DateExtension());
+    }
                 
     FormatString(format, date) {
 
@@ -308,9 +312,7 @@ class DateExtension {
         return string;
     }
 
-    static Register(ATMFEngine) {
-        ATMFEngine.extensions.Register('date', new DateExtension());
-    }
+    
 
 
 }

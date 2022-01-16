@@ -1,4 +1,4 @@
-//import ATMFCulture from "./culture.js";
+import ATMFCulture from "./culture.js";
 import ATMFVariables from "./variables.js";
 
 class ATMFFunctions {
@@ -19,7 +19,7 @@ class ATMFFunctions {
                     const keypath = path.length > 1 ? path.substr(1).trim() : '';
                     const alias = args[2] || keypath;
                     if (keypath != '') {
-                        Culture.AddAlias(sender, alias, keypath);
+                        ATMFCulture.AddAlias(sender, alias, keypath);
                     }
                 }
                 return '';

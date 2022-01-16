@@ -1,5 +1,6 @@
 import { ATMFTag, ATMFExtensions } from './core/tag.js';
 import ATMFVariables from './core/variables.js'
+import ATMFCulture from './core/culture.js';
 
 class ATMFEngine {
 
@@ -7,7 +8,6 @@ class ATMFEngine {
     static extensions = ATMFExtensions;
 
     // Private properties
-    #cultureFolder; #currentCulture;
     #tags; #disableParsing; #openBlocks; #indexEach; #lastBlockID;
 
     // Private methods
@@ -22,11 +22,13 @@ class ATMFEngine {
         this.eVars = [];
         this.redundancyLimit = 32;
         this.allowGlobals = false;
-        this._globals = {};
         this.templates = {};
 
-        this.#cultureFolder = 'culture';
-        this.#currentCulture = 'en-US';
+        this._globals = {};
+        this._cachedTranslations = {};
+        this._aliases = {};
+        this._cultureDiscoveryPath = 'culture';
+        this._currentCulture = 'en-US';
 
         this.#tags = [];
         this.#disableParsing = 0;
@@ -64,8 +66,10 @@ class ATMFEngine {
         while (startPos >= 0) {
 
             // Skip escaping with backslash
-            if (startPos > 0 && str.substr(startPos - 1, 2) == '\\{')
+            if (startPos > 0 && str.substr(startPos - 1, 2) == '\\{') {
+                startPos = str.indexOf('{', startPos + 1);
                 continue;
+            }
 
             var blockStr = '';
             var blockMatch = false;
@@ -222,6 +226,45 @@ class ATMFEngine {
         this.templates[name] = src;
     }
 
+    SetTemplateDiscoveryPath(path, ext = ['html', 'tpl']) {
+        path = path.replace(/\/$/, "").replace(/\\$/, "");
+        this._templateDiscoveryPath = path;
+        this._templateDiscoveryExt = Array.isArray(ext) ? ext : [ext];
+    }
+
+    DiscoverTemplate(name) {
+        console.error('ATMF Error: DiscoverTemplate prototype not defined!');
+        return true;
+    }
+
+    SetCultureDiscoveryPath(path) {
+        path = path.replace(/\/$/, "").replace(/\\$/, "");
+        if (this._cultureDiscoveryPath != path) {
+            this._cultureDiscoveryPath = path;
+            ATMFCulture.ResetTranslations(this);
+        }
+    }
+
+    GetCultureDiscoveryPath() {
+        return this._cultureDiscoveryPath;
+    }
+
+    SetCulture(culture='') {
+        if (culture != '' && this._currentCulture != culture) {
+            this._currentCulture = culture;
+            ATMFCulture.ResetTranslations(this);
+        }
+    }
+
+    GetCulture() {
+        return this._currentCulture;
+    }
+
+    ResolveCultureResource(keyname) {
+        console.error('ATMF Error: ResolveCultureResource prototype not defined!');
+        return true;
+    }
+
     __(key, val) {
         var tag = ATMFTag.ParseStr(key);
         if (tag == null) return;
@@ -230,7 +273,7 @@ class ATMFEngine {
         else return tag.Build(this);
     }
 
-    __escape($str) {
+    __escape(str) {
         var str = str.replaceAll('{', '&lcub;');
         str = str.replaceAll('}', '&rcub;');
         return str;

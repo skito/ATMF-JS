@@ -1,0 +1,72 @@
+<html>
+    <head>
+        <script type="module" src="../../src/atmf/browser/browser.js"></script>
+        <script>
+            window.onload = function () {
+                // Configure auto discovery
+                ATMF.templateDiscoveryPath = 'templates/';
+                ATMF.SetCultureDiscoveryPath('culture/');
+
+                __('$hello', 'hey there');
+                console.log(__('$hello'));
+
+                var setTime = function () {
+                    /*var date = new Date();
+                    var hours = date.getHours() < 9 ? '0' + date.getHours() : date.getHours();
+                    var minutes = date.getMinutes() < 9 ? '0' + date.getMinutes() : date.getMinutes();
+                    var seconds = date.getSeconds() < 9 ? '0' + date.getSeconds() : date.getSeconds();
+                    __('$timeNow', hours + ':' + minutes + ':' + seconds);*/
+                    __('$timeNow', __('/date "H:i:s"'));
+                };
+                setTime();
+                setInterval(setTime, 1000);
+
+                __('$books', [
+                    { name: "Dark Knight", price: 20.00, soldOut: false },
+                    { name: "Dark Knight Returns", price: 24.99, soldOut: true },
+                ]);
+            };
+        
+        </script>
+    </head>
+    <body>
+        <h1>Time launch is <span data-atmf="{/date Y-d-m}"></span></h1>
+        <h3 data-atmf="{@header.theFox 1 red}"></h3>
+        <div data-atmf="{#template header}"></div>
+        <div id="id" data-atmf="{#template #inline}">
+            <!-- 
+                Use either <textarea> or <xmp> as wrapper to bypass browser parsing
+                NOTE: <xmp> is depricated, but still supported in most browsers
+            -->
+            <textarea>
+                <table style="width:100%">
+                    <tr>
+                        <td>Book name</td>
+                        <td>Price</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    {#each $book in $books}
+                    <tr>
+                        <td>{$book.name}</td>
+                        <td>{$book.price}</td>
+                        <td>
+                            {#if $book.soldOut}
+                            <span style="color:red">Sold Out</span>
+                            {#else}
+                            <span style="color:green">In Stock</span>
+                            {#end}
+                        </td>
+                    </tr>
+                    {#end}
+                </table>
+                {#if $condition}
+                <h1>Hello</h1>
+                {#else}
+                <b>aaa--ehelo</b>
+                {#end}
+            </textarea>
+        </div>
+        <input type="text" id="input" data-atmf="{$hello}" />
+        <div data-atmf="Time now is {$timeNow}"></div>
+    </body>
+</html>
