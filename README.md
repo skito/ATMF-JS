@@ -15,9 +15,9 @@ Full specificaiton of the format is [available here](https://github.com/skito/AT
 # Ecosystems
 The ATMF engine is written in pure Javascript and it executes in all JS ecosystems. There are several libraries which wrap the core engine, in order to face enviropment specifics and get the most of ATMF. Choose your ecosystem.
 
-- [Get started with Browser enviropment](https://github.com/skito/ATMF-JS/README-BROWSER.md)
-- [Get started with NodeJS](https://github.com/skito/ATMF-JS/README-NODEJS.md)
-- [Get started with React](https://github.com/skito/ATMF-JS/README-REACT.md)
+- [Get started with Browser enviropment](https://github.com/skito/ATMF-JS/blob/main/README-BROWSER.md)
+- [Get started with NodeJS](https://github.com/skito/ATMF-JS/blob/main/README-NODEJS.md)
+- [Get started with React](https://github.com/skito/ATMF-JS/blob/main/README-REACT.md)
 
 # Prototyping
 Still in progress...
