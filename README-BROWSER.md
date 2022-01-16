@@ -38,7 +38,26 @@ The ATMF browser library will watch all of your body DOM and will automatically 
 # Advanced Usage
 __Global selector ``__()``__
 
-Draft in progress...
+```javascript
+// Assign variables
+__('$fullname', 'Advanced-Template-Markup-Format');
+__('$shortname', 'ATMF');
+__('$pagetitle', '{$fullname " (" $shortname ")"}');
+__('$slogan', 'Cultural made easy!');
+__('$userData', __escape('{$crossScripting}'));
+
+
+// Using ATMF native properties
+ATMF.vars['slogan'] = 'Cultural made easy!';
+ATMF.DiscoverTemplate('header').then(() => { /* Do something */ });
+
+// State management
+var setTime = function () {
+    __('$timeNow', __('/date "H:i:s"'));
+};
+setTime();
+setInterval(setTime, 1000);
+```
 
 # Usage Front-End (templates)
 __Variables__
