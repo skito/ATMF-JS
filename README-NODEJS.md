@@ -1,4 +1,4 @@
 [Back to main document](https://github.com/skito/ATMF-JS)
-# ATMF-JS / Browser enviropment
+# ATMF-JS / NodeJS
 
 Draft in progress...
