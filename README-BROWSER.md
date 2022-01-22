@@ -59,6 +59,48 @@ setTime();
 setInterval(setTime, 1000);
 ```
 
+
+# Usage Front-End (data attribute)
+```html
+<h1 data-atmf="{$pageTitle}"></h1>
+```
+
+__Language resources__
+```html
+<h1 data-atmf="{@page.title}"></h1>
+<h1 data-atmf="{@page.theFox 10 red}"></h1>
+```
+Translations available at ``demos/common/culture/`` folder.
+
+__Templates and functions__
+```html
+<!-- Load ../common/pages/header.html template -->
+<!-- according to the autodiscovery function above -->
+<div data-atmf="{#template pages/header}"></div> 
+
+<!-- Inline templates -->
+<div data-atmf="{#template #inline}">
+ <!-- 
+     Use either <textarea> or <xmp> as wrapper to bypass browser parsing
+     NOTE: <xmp> is depricated, but still supported in most browsers
+ -->
+ <textarea>
+   <h1>{@page.title}</h1>
+   {#if $someVar}
+    <div>Show me in some condition</div>
+   {#else}
+    <div>Otherwise show me</div>
+   {#end}
+ </textarea>
+</div>
+```
+
+__Extensions__
+```html
+<h1 data-atmf="Today date is {/date 'M d, Y'}"></h1>
+```
+
+
 # Usage Front-End (templates)
 __Variables__
 ```html
@@ -66,10 +108,11 @@ __Variables__
 ```
 
 __Language resources__
-```html
+```html            
 <h1>{@page.title}</h1>
 <h1>{@page.theFox 10 red}</h1>
 ```
+Translations available at ``demos/common/culture/`` folder.
 
 __Functions - #each #if #else #end__
 ```html
@@ -113,7 +156,50 @@ __Escaping with backslash__
 <h1>\{@page.title}</h1>
 ```
 
-Full demo available at ``index.php`` and the ``templates`` folder
+Full demo available ``demos/common/templates/`` folder.
+
 
 # Custom Extensions
-Draft in progress...
+Declare your custom extensions with this interface.
+```javascript
+class MyCustomExtension
+{    
+    constructor() {
+        this.str = "My custom extension";
+    }
+    
+    Get(args) 
+    {
+        return this.str;
+    }
+    
+    Set(args, value) 
+    {
+        this.str = value;
+    }
+    
+    static Register(ATMFEngine) {
+        ATMFEngine.extensions.Register('mycustom', new MyCustomExtension());
+    }
+}
+```
+
+Then in your ATMF setup code, call the register function
+```javascript
+window.addEventListener('load', (e) => {
+    MyCustomExtension.Register(ATMFEngine);
+};
+```
+
+Using the extension
+```html
+<span data-atmf="{/mycustom}"></span> <!-- OUTPUT: My custom extension -->
+```
+
+Using with JS selector
+```javascript
+__('/mycustom') // Returns "My custom extension"
+__('/mycustom', 'Another custom value') // Change the value
+__('/mycustom') // Returns "Another custom value"
+```
+For more advanced example with arguments check the date core extension inside ``src/atmf/engine/ext/date.js``
