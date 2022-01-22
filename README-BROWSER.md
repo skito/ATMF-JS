@@ -34,6 +34,7 @@ __('$hello', 'Hellow World!')
 
 The ATMF browser library will watch all of your body DOM and will automatically evaluate ATMF markup as long as it's available in any ``data-atmf`` attribute.
 
+&nbsp;
 
 # Advanced Usage
 __Global selector ``__()``__
@@ -59,6 +60,7 @@ setTime();
 setInterval(setTime, 1000);
 ```
 
+&nbsp;
 
 # Usage Front-End (data attribute)
 ```html
@@ -100,6 +102,7 @@ __Extensions__
 <h1 data-atmf="Today date is {/date 'M d, Y'}"></h1>
 ```
 
+&nbsp;
 
 # Usage Front-End (templates)
 __Variables__
@@ -158,6 +161,7 @@ __Escaping with backslash__
 
 Full demo available ``demos/common/templates/`` folder.
 
+&nbsp;
 
 # Custom Extensions
 Declare your custom extensions with this interface.
