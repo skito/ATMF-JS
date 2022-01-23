@@ -207,3 +207,8 @@ __('/mycustom', 'Another custom value') // Change the value
 __('/mycustom') // Returns "Another custom value"
 ```
 For more advanced example with arguments check the date core extension inside ``src/atmf/engine/ext/date.js``
+
+&nbsp;
+
+# Prototyping
+To make your own custom template and culture discovery you need to prototype the ATMF engine. [Learn more about it here](https://github.com/skito/ATMF-JS#prototyping).
