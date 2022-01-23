@@ -27,6 +27,8 @@ class ATMFEngine {
         this._globals = {};
         this._cachedTranslations = {};
         this._aliases = {};
+        this._templateDiscoveryExt = ['html', 'ptpl'];
+        this._templateDiscoveryPath = '.';
         this._cultureDiscoveryPath = 'culture';
         this._currentCulture = 'en-US';
 
