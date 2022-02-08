@@ -27,7 +27,7 @@ class ATMFEngine {
         this._globals = {};
         this._cachedTranslations = {};
         this._aliases = {};
-        this._templateDiscoveryExt = ['html', 'ptpl'];
+        this._templateDiscoveryExt = ['html', 'tpl'];
         this._templateDiscoveryPath = '.';
         this._cultureDiscoveryPath = 'culture';
         this._currentCulture = 'en-US';
@@ -111,7 +111,8 @@ class ATMFEngine {
             }
 
             // Parse markup
-            if (this.#ParsingIsEnabled()) {
+            // If not inside foreach or is template
+            if (this.#ParsingIsEnabled() || blockStr.indexOf('#template') == 0) {
                 var doParseBlock = false;
 
                 // Good idea for caching tag outputs
