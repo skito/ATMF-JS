@@ -10,8 +10,29 @@ class ATMFFunctions {
         switch (tagName) {
             case '#template':
                 const name = args[0] || '';
+                const label = args[1] || '';
                 const template = sender.GetTemplate(name);
+                if (template && template != '' && label != '')
+                {
+                    var labels = template.match(/\{\#label(.*?)\}(.*?)\{\#endlabel\}/gims) || [];
+                    for (const match of labels)
+                    {
+                        const lblparts = match.match(/\{\#label(.*?)\}(.*?)\{\#endlabel\}/ims);
+                        const lblatts = (lblparts[1] || '').trim().split(' ');
+                        const lblname = lblatts[0] || '';
+                        const snippet = lblparts[2] || '';
+
+                        if (lblname == label) 
+                            return snippet;
+                    }
+                    return '';
+                }
                 return template || '';
+            case '#label':
+                var hidden = args[1] || '';
+                return hidden != 'hidden' ? '<%:block_start%><%:show%>' : '<%:block_start%><%:hide%>';
+            case '#endlabel':
+                return '<%:block_end%>';
             case '#use':
                 const path = args[0] || '';
                 const operator = args[1] || 'as';

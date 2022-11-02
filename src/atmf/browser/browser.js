@@ -126,7 +126,9 @@ ATMFEngine.prototype.DiscoverTemplate = function (name) {
         request.addEventListener("error", () => {
             reject(name);
         });
-        request.open('GET', this._templateDiscoveryPath + '/' + name + '.' + this._templateDiscoveryExt[0]);
+        const ext = this._templateDiscoveryExt[0] || '';
+        const url = this._templateDiscoveryPath + '/' + name + (ext != '' ? '.' + ext : '');
+        request.open('GET', url);
         request.send();
     });
 };
