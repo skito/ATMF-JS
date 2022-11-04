@@ -179,10 +179,10 @@ class ATMFEngine {
     }
 
     ParseBlocks(blockStr) {
-        if (blockStr.indexOf('<%:block_start%><%:show%>') >= 0) {
+        if (blockStr.indexOf('<%:block_start%><%:show%>') === 0) {
             return blockStr.substr(25, blockStr.length - 39);
         }
-        else if (blockStr.indexOf('<%:block_start%><%:each%>') >= 0) {
+        else if (blockStr.indexOf('<%:block_start%><%:each%>') === 0) {
             var resultStr = '';
             var str = blockStr.substr(25, blockStr.length - 39);
             
@@ -288,6 +288,3 @@ String.prototype.substr_count = function (search) {
 }
 
 export {ATMFExtensions, ATMFEngine as default};
-
-
-
