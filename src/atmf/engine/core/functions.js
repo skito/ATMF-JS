@@ -70,7 +70,7 @@ class ATMFFunctions {
                     if (matchAll && !result)
                         break;
                 }
-
+                
                 ATMFFunctions.#lastConditionResults.push(!result);
                 return result ? '<%:block_start%><%:show%>' : '<%:block_start%><%:hide%>';
             case '#endif':
@@ -84,6 +84,7 @@ class ATMFFunctions {
                 const lastCondResult = count > 0 ? ATMFFunctions.#lastConditionResults[count - 1] : false;
                 return lastCondResult ? '<%:block_end%><%:block_start%><%:show%>' : '<%:block_end%><%:block_start%><%:hide%>';
             case '#each':
+                ATMFFunctions.#lastConditionResults.push(false); // Hollow push, it will be removed at #end match
                 if (args.length == 3 && ['as', 'in'].includes(args[1].trim())) {
                     const operator = args[1].trim();
                     const collection = (operator == 'as' ? args[0] : args[2]).trim();
