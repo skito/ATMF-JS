@@ -102,7 +102,7 @@ class ATMFEngine {
             if (blockStr.indexOf('#each') == 0 || blockStr.indexOf('#if') == 0)
                 this.#openBlocks++;
 
-            if (blockStr.indexOf('#end') == 0) {
+            if (blockStr.indexOf('#end') == 0 && blockStr.indexOf('#endlabel') !== 0) {
                 if (typeof this.#indexEach[this.#openBlocks] != 'undefined') {
                     this.#EnableParsing();
                     delete this.#indexEach[this.#openBlocks];

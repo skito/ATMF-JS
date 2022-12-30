@@ -25,7 +25,7 @@ ATMFEngine.prototype._mutationObserver = new MutationObserver(function (mutation
                 for (const node of mutation.addedNodes) {
                     if (typeof node.dataset == 'undefined') continue;
                     if (typeof node.dataset.atmf == 'undefined') continue;
-                    if (!ATMF._observations.includes(node)) {
+                    if (!ATMF._observations.includes(node)) {                        
                         ATMF.ObserveElement(node);
                         ATMF.SetContents(node);
                     }
@@ -51,7 +51,8 @@ ATMFEngine.prototype.ObserveElement = function (element) {
     this._observations.push(element);
     this._mutationObserver.observe(element, { attributes: true });
 };
-ATMFEngine.prototype.Rebuild = function (atmf) {
+
+ATMFEngine.prototype.Rebuild = function (atmf) {    
     var rebuildAll = (typeof atmf == 'undefined');
     for (var i in this._observations) {
         var element = this._observations[i];
@@ -59,18 +60,51 @@ ATMFEngine.prototype.Rebuild = function (atmf) {
         if (rebuildAll) doRebuild = true;
         else {
             var components = atmf.replaceAll('}', '').replaceAll('{', '').split(' ');
-            for (var c in components) {
-                if (element.dataset.atmf.indexOf(components[c]) >= 0) {
-                    doRebuild = true;
-                    break;
+            
+            // Remove unrelated keywords
+            var unrelatedKeywords = ['#template'];
+            for(const k of unrelatedKeywords)
+                components.indexOf(k) >= 0 && components.splice(components.indexOf(k), 1);
+
+            var attrComponents = element.dataset.atmf.replaceAll('{', '').replaceAll('}', '').split(' ');
+            for (var component of components) {
+                
+                for(const attrComponent of attrComponents) {
+                    if (attrComponent == component) {
+                        doRebuild = true;
+                        break;
+                    }
                 }
+
+                if (doRebuild) break;
             }
         }
 
         if (doRebuild)
+        {
             ATMF.SetContents(element);
+        }
     }
 };
+
+ATMFEngine.prototype._contentCallbacks = [];
+ATMFEngine.prototype.ContentCallback = function(callback, context={}, permanent = false) {
+    this._contentCallbacks.push({
+        handler: callback,
+        context: context,
+        permanent: permanent
+    });
+};
+ATMFEngine.prototype.RemoveContentCallback = function(callback) {
+    var callbackHandlers = [];
+    for(var callbackHandler of this._contentCallbacks)
+    {
+        if (callbackHandler.handler != callback)
+            callbackHandlers.push(callbackHandler);
+    }
+    this._contentCallbacks = callbackHandlers;
+};
+
 ATMFEngine.prototype.SetContents = function (target) {
     if (typeof target.dataset == 'undefined') return;
 
@@ -90,6 +124,12 @@ ATMFEngine.prototype.SetContents = function (target) {
         output = ATMF.ParseMarkup(output);
         redundancy++;
     }
+
+    // Replace escaped tags
+    output = output.replaceAll('\\{$', '{$');
+    output = output.replaceAll('\\{@', '{@');
+    output = output.replaceAll('\\{#', '{#');
+    output = output.replaceAll('\\{/', '{/');
     
 
     if (typeof target.value != 'undefined')
@@ -100,6 +140,19 @@ ATMFEngine.prototype.SetContents = function (target) {
         target.innerHTML = output;
     else if (typeof target.innerTEXT != 'undefined')
         target.innerTEXT = output;
+
+    // Execute content calbacks
+    var callbackHandlers = [];
+    for(var callbackHandler of this._contentCallbacks)
+    {
+        if (typeof callbackHandler.handler == 'function') {
+            callbackHandler.handler.apply(callbackHandler.context, [target, output]);
+        }
+
+        if (callbackHandler.permanent)
+            callbackHandlers.push(callbackHandler);
+    }
+    this._contentCallbacks = callbackHandlers;
 };
 ATMFEngine.prototype.GetTemplate = function (name) {
     if (typeof this.templates[name] != 'undefined')
