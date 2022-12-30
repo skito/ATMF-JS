@@ -52,7 +52,7 @@ class ATMFFunctions {
                     if (['', '&&', '||'].includes('argns')) continue;
 
                     result = false;
-                    const cmd = argns.substr(0, 1);
+                    var cmd = argns.substr(0, 1);
                     const reverseCond = (cmd == '!');
                     var argValue = reverseCond ? argns.substr(1) : argns;
                     if (reverseCond && argValue.length > 1) cmd = argValue.substr(0, 1);
