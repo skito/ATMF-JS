@@ -49,7 +49,7 @@ class ATMFFunctions {
                 const matchAll = !args.includes(['||']);
                 for (const arg of args) {
                     const argns = arg.trim();
-                    if (['', '&&', '||'].includes('argns')) continue;
+                    if (['', '&&', '||'].includes(argns)) continue;
 
                     result = false;
                     var cmd = argns.substr(0, 1);
