@@ -272,7 +272,7 @@ class ATMFEngine {
         var tag = ATMFTag.ParseStr(key);
         if (tag == null) return;
 
-        if (val != null) tag.Set(this, val);
+        if (typeof val != 'undefined') tag.Set(this, val);
         else return tag.Build(this);
     }
 

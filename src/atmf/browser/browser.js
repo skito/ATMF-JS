@@ -59,15 +59,15 @@ ATMFEngine.prototype.Rebuild = function (atmf) {
         var doRebuild = false;
         if (rebuildAll) doRebuild = true;
         else {
-            var components = atmf.replaceAll('}', '').replaceAll('{', '').split(' ');
+            var components = atmf.replaceAll('}', '').replaceAll('{', '').split(/[\s.]+/);
             
             // Remove unrelated keywords
             var unrelatedKeywords = ['#template'];
             for(const k of unrelatedKeywords)
                 components.indexOf(k) >= 0 && components.splice(components.indexOf(k), 1);
 
-            var attrComponents = element.dataset.atmf.replaceAll('{', '').replaceAll('}', '').split(' ');
-            for (var component of components) {
+            var attrComponents = element.dataset.atmf.replaceAll('{', '').replaceAll('}', '').split(/[\s.]+/);
+            for (const component of components) {
                 
                 for(const attrComponent of attrComponents) {
                     if (attrComponent == component) {
@@ -86,7 +86,6 @@ ATMFEngine.prototype.Rebuild = function (atmf) {
         }
     }
 };
-
 ATMFEngine.prototype._contentCallbacks = [];
 ATMFEngine.prototype.ContentCallback = function(callback, context={}, permanent = false) {
     this._contentCallbacks.push({
@@ -104,7 +103,6 @@ ATMFEngine.prototype.RemoveContentCallback = function(callback) {
     }
     this._contentCallbacks = callbackHandlers;
 };
-
 ATMFEngine.prototype.SetContents = function (target) {
     if (typeof target.dataset == 'undefined') return;
 
