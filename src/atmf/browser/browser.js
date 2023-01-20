@@ -50,6 +50,7 @@ ATMFEngine.prototype.ObserveElement = function (element) {
 
     this._observations.push(element);
     this._mutationObserver.observe(element, { attributes: true });
+    this.SetContents(element);
 };
 
 ATMFEngine.prototype.Rebuild = function (atmf) {    
@@ -106,29 +107,8 @@ ATMFEngine.prototype.RemoveContentCallback = function(callback) {
 ATMFEngine.prototype.SetContents = function (target) {
     if (typeof target.dataset == 'undefined') return;
 
-    var output = target.dataset.atmf || '';
-    var redundancy = 0;
-    while (
-        output.substr_count('{$') > output.substr_count('\\{$') ||
-        output.substr_count('{@') > output.substr_count('\\{@') ||
-        output.substr_count('{#') > output.substr_count('\\{#') ||
-        output.substr_count('{/') > output.substr_count('\\{/')) {
-
-        if (redundancy > this.redundancyLimit) {
-            console.error('ATMF redundancy limit reached!');
-            break;
-        }
-
-        output = ATMF.ParseMarkup(output);
-        redundancy++;
-    }
-
-    // Replace escaped tags
-    output = output.replaceAll('\\{$', '{$');
-    output = output.replaceAll('\\{@', '{@');
-    output = output.replaceAll('\\{#', '{#');
-    output = output.replaceAll('\\{/', '{/');
-    
+    var src = target.dataset.atmf || '';
+    var output = this.Rend(src);    
 
     if (typeof target.value != 'undefined')
         target.value = output;

@@ -61,6 +61,35 @@ class ATMFEngine {
         };
     }
 
+    Rend(src='') {
+
+        var output = src;
+        var redundancy = 0;
+
+        while (
+            output.substr_count('{$') > output.substr_count('\\{$') ||
+            output.substr_count('{@') > output.substr_count('\\{@') ||
+            output.substr_count('{#') > output.substr_count('\\{#') ||
+            output.substr_count('{/') > output.substr_count('\\{/')) {
+    
+            if (redundancy > this.redundancyLimit) {
+                console.error('ATMF redundancy limit reached!');
+                break;
+            }
+    
+            output = this.ParseMarkup(output);
+            redundancy++;
+        }
+    
+        // Replace escaped tags
+        output = output.replaceAll('\\{$', '{$');
+        output = output.replaceAll('\\{@', '{@');
+        output = output.replaceAll('\\{#', '{#');
+        output = output.replaceAll('\\{/', '{/');
+
+        return output;
+    }
+
     ParseMarkup(str='') {
 
         // ATMF Tags
@@ -102,7 +131,7 @@ class ATMFEngine {
             if (blockStr.indexOf('#each') == 0 || blockStr.indexOf('#if') == 0)
                 this.#openBlocks++;
 
-            if (blockStr.indexOf('#end') == 0 && blockStr.indexOf('#endlabel') !== 0) {
+                if (blockStr.indexOf('#end') == 0 && blockStr.indexOf('#endlabel') !== 0) {
                 if (typeof this.#indexEach[this.#openBlocks] != 'undefined') {
                     this.#EnableParsing();
                     delete this.#indexEach[this.#openBlocks];
