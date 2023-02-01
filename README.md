@@ -3,11 +3,11 @@
 __Javascript support for ATMF (Advanced-Template-Markup-Format)__
 
 ![GitHub release (latest by date)](https://img.shields.io/badge/Ecosystems-gray)
-![GitHub release (latest by date)](https://img.shields.io/badge/Browser-yellow)
-![GitHub release (latest by date)](https://img.shields.io/badge/NodeJS-green)
-![GitHub release (latest by date)](https://img.shields.io/badge/React-blue)
+![Browser support](https://img.shields.io/badge/Browser-yellow)
+![NodeJS support](https://img.shields.io/badge/NodeJS-green)
+![ReactJS support](https://img.shields.io/badge/React-blue)
 
-&nbsp;
+![Cover](cover.png)
  
 # More about ATMF
 Full specificaiton of the format is [available here](https://github.com/skito/ATMF)
