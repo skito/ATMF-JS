@@ -14,7 +14,7 @@ class ATMFCulture {
                 if (keypath.indexOf('.') >= 0 || alias != path) {
                     var parts = keypath.split('.');
                     if (parts[0] == alias) {
-                        delete parts[0];
+                        parts.splice(0,1);
                         realKeypath = path + '.' + parts.join('.');
                         hasAnAlias = true;
                     }
