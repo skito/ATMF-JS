@@ -33,7 +33,7 @@ class ATMFCulture {
             }
         }
 
-        if (typeof cultureResources[realKeypath] == 'undefined') return '';
+        if (typeof cultureResources[realKeypath] == 'undefined') return null;
 
         const resource = cultureResources[realKeypath];
         var translation = '';
